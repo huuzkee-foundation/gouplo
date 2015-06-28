@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <title>File Upload Form</title>
+		<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+		<script type="text/javascript">
+			$( document ).ready(function() {
+				$("#upload").click(function () {
+					var fd = new FormData(document.getElementById("uploadform"));
+					$.ajax({
+						url: "/upload",
+						type: "POST",
+						data: fd,
+						enctype: 'multipart/form-data',
+						processData: false,  // tell jQuery not to process the data
+						contentType: false   // tell jQuery not to set contentType
+					}).done(function(data) {
+						if (data == "successful") {
+							$("#message").text("Upload Successful! Ready for more files.")
+							$("#files").replaceWith($("#files").val('').clone(true));
+						} else {
+							$("#message").text(data)
+						}
+					});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h2>Upload Files</h2>
+	    <div id="message">Choose one or more files then click 'Upload'.</div>
+	    <form id="uploadform">
+	        <fieldset>
+	            <input type="file" name="files" id="files" multiple="multiple">
+	            <input type="button" id="upload" name="upload" value="Upload">
+	        </fieldset>
+	    </form>
+	</body>
+</html>
